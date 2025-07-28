@@ -12,6 +12,7 @@ from langchain.indexes import VectorstoreIndexCreator
 from langchain.chains import RetrievalQA
 
 # ---- ENV + Config ----
+os.environ["TRANSFORMERS_NO_GPU"] = "1"
 os.environ["LANGCHAIN_TRACING_V2"] = "false"
 os.environ["LANGCHAIN_ENDPOINT"] = ""
 load_dotenv()
@@ -54,7 +55,7 @@ uploaded_pdf = st.file_uploader("Upload your PDF here", type="pdf")
 def get_vectorstore(pdf_path):
     loaders = [PyPDFLoader(pdf_path)]
     index = VectorstoreIndexCreator(
-        embedding=HuggingFaceEmbeddings(model_name='all-MiniLM-L12-v2'),
+        embedding=HuggingFaceEmbeddings(model_name='all-MiniLM-L12-v2',model_kwargs={"device": "cpu"}),
         text_splitter=RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     ).from_loaders(loaders)
     return index.vectorstore
