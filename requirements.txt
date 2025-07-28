@@ -4,4 +4,7 @@ langchain
 langchain-core
 langchain-community
 langchain-groq
+langchain-huggingface
 sentence-transformers
+transformers
+torch
