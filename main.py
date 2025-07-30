@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain.embeddings import SentenceTransformerEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import PyPDFLoader
 from langchain.indexes import VectorstoreIndexCreator
@@ -55,7 +55,8 @@ uploaded_pdf = st.file_uploader("Upload your PDF here", type="pdf")
 def get_vectorstore(pdf_path):
     loaders = [PyPDFLoader(pdf_path)]
     index = VectorstoreIndexCreator(
-        embedding=HuggingFaceEmbeddings(model_name='./all-MiniLM-L12-v2', model_kwargs={"device": "cpu"}),
+        embedding = SentenceTransformerEmbeddings(model_name="./all-MiniLM-L12-v2"),
+
 
         text_splitter=RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
     ).from_loaders(loaders)
